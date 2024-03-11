@@ -19,7 +19,7 @@ public class FluidSimulationLocalConfig : LocalAccountConfig<FluidSimulationLoca
         m_data.fluidConfig.ejecters.Add(new Ejecter()
         {
             x = 0.99f,
-            y = 0.38f,
+            y = 0.49f,
             dx = -1000,
             dy = 0,
             color = FluidSimulation.GenerateColor(),

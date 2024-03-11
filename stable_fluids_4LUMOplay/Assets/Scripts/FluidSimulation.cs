@@ -71,11 +71,11 @@ public class FluidConfig
     [SerializeField]
     public float velocityDiffuse = 0f;
     [SerializeField]
-    public int pressureIterNum = 66;
+    public int pressureIterNum = 125;
     [SerializeField]
-    public float addForce = 12000f;
+    public float addForce = 350f;
     [SerializeField]
-    public float addRadius = 0.3f;
+    public float addRadius = 0.15f;
     [SerializeField]
     public bool colorful = true;
     [SerializeField]
