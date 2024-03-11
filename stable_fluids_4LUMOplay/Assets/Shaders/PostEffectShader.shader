@@ -41,6 +41,7 @@ Shader "bluebean/StableFluids/PostEffectShader"
 
 			sampler2D _Source;
 			sampler2D _sunray;
+			bool _gray = false;
 
 			//float3 linearToGamma(float3 color) {
 			//	color = max(color, float3(0.0,0.0,0.0));
@@ -56,6 +57,12 @@ Shader "bluebean/StableFluids/PostEffectShader"
 				c *= sunray;
 #endif
 
+//#ifdef Gray
+				if (_gray) {
+					float gray = 0.299*c.r + 0.587*c.g + 0.114*c.b;
+					c = float3(gray, gray, gray);
+				}
+//#endif
 				//float a = max(c.r, max(c.g, c.b));
 
 				float4 result = float4(c, 1.0);

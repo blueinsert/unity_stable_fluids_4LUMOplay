@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.Text;
 using bluebean.UGFramework.Log;
 using System.IO;
+using LUMOplay;
 
 [System.Serializable]
 public class Ejecter
@@ -35,6 +36,13 @@ public class SunrayConfig
     public bool enabled = false;
     [SerializeField]
     public float weight = 0.5f;
+}
+
+[System.Serializable]
+public class PostEffectConfig
+{
+    [SerializeField]
+    public bool gray = false;
 }
 
 public class FluidConfigConst
@@ -73,8 +81,8 @@ public class FluidConfig
     [SerializeField]
     public float colorUpdatePeriod = 0.1f;
 
-    [SerializeField]
-    public SunrayConfig sunrayConfig = new SunrayConfig();
+    //[SerializeField]
+    //public SunrayConfig sunrayConfig = new SunrayConfig();
     [SerializeField]
     public List<Ejecter> ejecters = new List<Ejecter>();
 
@@ -308,7 +316,7 @@ public class FluidSimulation : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         if (FluidSimulationLocalConfig.Instance.Load())
         {
             Debug.Log(string.Format("load local config from {0}", configFileName));
-            Debug.Log(string.Format("config:\n", FluidSimulationLocalConfig.Instance.ToString()));
+            Debug.Log(string.Format("config:\n {0}", JsonUtility.ToJson(FluidSimulationLocalConfig.Instance.Data, true)));
         }
         else
         {
@@ -316,7 +324,7 @@ public class FluidSimulation : MonoBehaviour, IPointerDownHandler, IPointerUpHan
             {
                 Debug.Log(string.Format("init local config file at {0}", configFileName));
                 FluidSimulationLocalConfig.Instance.Save();
-                Debug.Log(string.Format("config:\n", FluidSimulationLocalConfig.Instance.ToString()));
+                Debug.Log(string.Format("config:\n {0}",  JsonUtility.ToJson( FluidSimulationLocalConfig.Instance.Data,true)));
             }
         }
     }
@@ -651,35 +659,58 @@ public class FluidSimulation : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         }
     }
 
-    void ApplyInput()
+    void ApplyLumoPlayVisionMotionAsInput()
     {
-        foreach (var pointerData in m_pointerDatas)
+        List<LumoMotionEvent> motion = MotionListener.CurrentMotion;
+
+        // check all motion for hits on this objects Collider2D
+        foreach (LumoMotionEvent evt in motion)
         {
-            if (pointerData.IsMove)
+            //Debug.Log(string.Format("evt pos:{0} moveDir:{1}",evt.Centroid2D, evt.MotionDirection2D));
+            var x = evt.Centroid2D.x / (float)Screen.width;
+            var y = evt.Centroid2D.y / (float)Screen.height;
+            var vel = evt.MotionDirection2D * m_config.addForce;
+            float radio = Screen.width / (float)Screen.height;
+            float radius = m_config.addRadius / 100f * radio;
+            AddSource(x, y, vel.x, vel.y, GenerateColor(), radius);
+            foreach (Ray ray in evt.Scatter)
             {
-                pointerData.IsMove = false;
-                float radio = Screen.width / (float)Screen.height;
-                float radius = m_config.addRadius / 100f * radio;
-                AddSource(pointerData.x, pointerData.y, pointerData.deltaX * m_config.addForce, pointerData.deltaY * m_config.addForce, pointerData.color, radius);
+                //Debug.Log(string.Format("ray pos:{0}",ray.origin));
+                //if (motionCollider.OverlapPoint(ray.origin)) Invoke(evt);
             }
         }
+    }
+
+    void ApplyInput()
+    {
+        //foreach (var pointerData in m_pointerDatas)
+        //{
+        //    if (pointerData.IsMove)
+        //    {
+        //        pointerData.IsMove = false;
+        //        float radio = Screen.width / (float)Screen.height;
+        //        float radius = m_config.SplatRadius / 100f * radio;
+        //        AddSource(pointerData.x, pointerData.y, pointerData.deltaX * m_config.SplatForce, pointerData.deltaY * m_config.SplatForce, pointerData.color, radius);
+        //    }
+        //}
         if (m_randomSourcePerFrame.Count != 0)
         {
             RandomAddSource(m_randomSourcePerFrame.Dequeue());
         }
-        if (m_config.colorful)
-        {
-            m_colorUpdateTimer += Time.deltaTime;
-            if (m_colorUpdateTimer > m_config.colorUpdatePeriod)
-            {
-                m_colorUpdateTimer -= m_config.colorUpdatePeriod;
-                foreach (var pointerData in m_pointerDatas)
-                {
-                    pointerData.color = GenerateColor();
-                }
-            }
-        }
+        //if (m_config.Colorful)
+        //{
+        //    m_colorUpdateTimer += Time.deltaTime;
+        //    if (m_colorUpdateTimer > m_config.ColorUpdatePeriod)
+        //    {
+        //        m_colorUpdateTimer -= m_config.ColorUpdatePeriod;
+        //        foreach (var pointerData in m_pointerDatas)
+        //        {
+        //            pointerData.color = GenerateColor();
+        //        }
+        //    }
+        //}
         ApplyEjecters();
+        ApplyLumoPlayVisionMotionAsInput();
     }
 
     void Clear(DoubleFBO target, float value)
@@ -719,15 +750,24 @@ public class FluidSimulation : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
     void PostEffects()
     {
-        if (m_config.sunrayConfig.enabled)
-            SunrayEffects();
+        //if (m_config.sunrayConfig.enabled)
+        //    SunrayEffects();
 
         m_postEffectMaterial.SetTexture("_Source", m_dye.Read().target);
-        m_postEffectMaterial.SetTexture("_sunray", m_sunray.target);
-        if (m_config.sunrayConfig.enabled)
-            m_postEffectMaterial.EnableKeyword("Sunray");
-        else
-            m_postEffectMaterial.DisableKeyword("Sunray");
+        //m_postEffectMaterial.SetTexture("_sunray", m_sunray.target);
+        //if (m_config.sunrayConfig.enabled)
+        //    m_postEffectMaterial.EnableKeyword("Sunray");
+        //else
+        //m_postEffectMaterial.DisableKeyword("Sunray");
+        //if (FluidSimulationLocalConfig.Instance.Data.postEffectConfig.gray)
+        //{
+        //    m_postEffectMaterial.EnableKeyword("Gray");
+        //}
+        //else
+        //{
+        //    m_postEffectMaterial.DisableKeyword("Gray");
+        //}
+        m_postEffectMaterial.SetInt("_gray", FluidSimulationLocalConfig.Instance.Data.postEffectConfig.gray ? 1 : 0);
         Blit(m_final, m_postEffectMaterial);
     }
 
@@ -934,6 +974,7 @@ public class FluidSimulation : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        return;
         //Debug.Log(string.Format("OnPointerDown:{0} id:{1}", eventData.position, eventData.pointerId));
         var id = eventData.pointerId;
         var pointer = m_pointerDatas.Find((e) => { return e.ID == id; });
@@ -957,6 +998,7 @@ public class FluidSimulation : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
     public void OnPointerMove(PointerEventData eventData)
     {
+        return;
         //Debug.Log(string.Format("OnPointerMove:{0} id:{1}", eventData.position, eventData.pointerId, eventData.button));
 
         var id = eventData.pointerId;
@@ -988,6 +1030,7 @@ public class FluidSimulation : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     public void OnPointerUp(PointerEventData eventData)
     {
         //Debug.Log(string.Format("OnPointerUp:{0} id:{1}", eventData.position, eventData.pointerId));
+        return;
         var id = eventData.pointerId;
         var pointer = m_pointerDatas.Find((e) => { return e.ID == id; });
         if (pointer != null)
