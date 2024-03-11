@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LUMOplaySDKExamples", "LUMOplaySDKExamples.csproj", "{4D85B5E4-E0DA-342B-A9E7-7EE58F4CF124}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{527816C8-EFE5-57D8-C585-37A8FF2B2A33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LUMOPlaySDK", "LUMOPlaySDK.csproj", "{10A89E34-1C4B-5443-31A7-5DD6ED5EE9EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{C21FE5D3-EA03-4512-DA95-267CE8133354}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D85B5E4-E0DA-342B-A9E7-7EE58F4CF124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D85B5E4-E0DA-342B-A9E7-7EE58F4CF124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D85B5E4-E0DA-342B-A9E7-7EE58F4CF124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D85B5E4-E0DA-342B-A9E7-7EE58F4CF124}.Release|Any CPU.Build.0 = Release|Any CPU
+		{527816C8-EFE5-57D8-C585-37A8FF2B2A33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{527816C8-EFE5-57D8-C585-37A8FF2B2A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{527816C8-EFE5-57D8-C585-37A8FF2B2A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{527816C8-EFE5-57D8-C585-37A8FF2B2A33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10A89E34-1C4B-5443-31A7-5DD6ED5EE9EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10A89E34-1C4B-5443-31A7-5DD6ED5EE9EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10A89E34-1C4B-5443-31A7-5DD6ED5EE9EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10A89E34-1C4B-5443-31A7-5DD6ED5EE9EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C21FE5D3-EA03-4512-DA95-267CE8133354}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C21FE5D3-EA03-4512-DA95-267CE8133354}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C21FE5D3-EA03-4512-DA95-267CE8133354}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C21FE5D3-EA03-4512-DA95-267CE8133354}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
