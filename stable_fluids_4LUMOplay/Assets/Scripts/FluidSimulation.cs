@@ -63,6 +63,8 @@ public class FluidConfig
     [SerializeField]
     public int dyeResolution = 1024;
     [SerializeField]
+    public float deltaTime = 1.0f / 60;
+    [SerializeField]
     public float dyeDisspiate = 0.1f;
     [SerializeField]
     public float velocityDisspiate = 0.1f;
@@ -275,12 +277,11 @@ public class FluidSimulation : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     private float m_lastClickTime = -999;
     private Vector2 m_lastClickPos = Vector2.zero;
 
-    private const int FrameRate = 60;
     private float DeltaTime
     {
         get
         {
-            return 1.0f / FrameRate;
+            return m_config.deltaTime;
         }
     }
 
@@ -970,6 +971,7 @@ public class FluidSimulation : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     private void OnDestroy()
     {
         ClearFrameBuffers();
+        FluidSimulationLocalConfig.Instance.Save();
     }
 
     public void OnPointerDown(PointerEventData eventData)
